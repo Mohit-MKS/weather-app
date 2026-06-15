@@ -28,6 +28,24 @@ const asNumber = (value: unknown): number | null =>
   typeof value === 'number' && Number.isFinite(value) ? value : null;
 
 class UtilService {
+  readCities(key: string): string[] {
+    try {
+      const value: unknown = JSON.parse(localStorage.getItem(key) ?? '[]');
+      return Array.isArray(value)
+        ? value.filter((city): city is string => typeof city === 'string')
+        : [];
+    } catch {
+      return [];
+    }
+  }
+
+  formatCityName(value: string): string {
+    return value
+      .trim()
+      .replace(/\s+/g, ' ')
+      .replace(/\b\w/g, (letter) => letter.toUpperCase());
+  }
+
   formatWeatherData(response: unknown): WeatherData {
     const weatherInfo = asRecord(response);
     const main = asRecord(weatherInfo.main);

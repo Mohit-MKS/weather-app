@@ -1,28 +1,16 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import utilService from '../services/utilService';
+import SavedCities from './SavedCities';
 
 const SAVED_CITIES_KEY = 'city-weather:saved-cities';
 const RECENT_CITIES_KEY = 'city-weather:recent-cities';
 
-const readCities = (key: string): string[] => {
-  try {
-    const value = JSON.parse(localStorage.getItem(key) ?? '[]');
-    return Array.isArray(value) ? value.filter((city): city is string => typeof city === 'string') : [];
-  } catch {
-    return [];
-  }
-};
-
-const formatCityName = (value: string) => value
-  .trim()
-  .replace(/\s+/g, ' ')
-  .replace(/\b\w/g, (letter) => letter.toUpperCase());
-
 const Home = () => {
   const [city, setCity] = useState('');
-  const [savedCities, setSavedCities] = useState<string[]>(() => readCities(SAVED_CITIES_KEY));
-  const [recentCities, setRecentCities] = useState<string[]>(() => readCities(RECENT_CITIES_KEY));
+  const [savedCities, setSavedCities] = useState<string[]>(() => utilService.readCities(SAVED_CITIES_KEY));
+  const [recentCities, setRecentCities] = useState<string[]>(() => utilService.readCities(RECENT_CITIES_KEY));
   const [selectedCities, setSelectedCities] = useState<Set<string>>(() => new Set());
   const [formError, setFormError] = useState('');
   const navigate = useNavigate();
@@ -36,7 +24,7 @@ const Home = () => {
   }, [recentCities]);
 
   const openWeather = (cityName: string) => {
-    const formattedCity = formatCityName(cityName);
+    const formattedCity = utilService.formatCityName(cityName);
 
     if (!formattedCity) {
       setFormError('Enter a city name to continue.');
@@ -57,7 +45,7 @@ const Home = () => {
   };
 
   const handleSaveCity = () => {
-    const formattedCity = formatCityName(city);
+    const formattedCity = utilService.formatCityName(city);
 
     if (!formattedCity) {
       setFormError('Enter a city name before saving.');
@@ -153,51 +141,13 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="saved-section" aria-labelledby="saved-heading">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow eyebrow--dark">Your places</p>
-            <h2 id="saved-heading">Saved cities</h2>
-          </div>
-          {selectedCities.size > 0 && (
-            <button className="button button--danger" type="button" onClick={deleteSelectedCities}>
-              Delete selected ({selectedCities.size})
-            </button>
-          )}
-        </div>
-
-        {savedCities.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-state__icon" aria-hidden="true" />
-            <h3>No saved cities yet</h3>
-            <p>Enter a city above and choose “Save city” to keep it close.</p>
-          </div>
-        ) : (
-          <div className="city-grid">
-            {savedCities.map((savedCity, index) => {
-              const isSelected = selectedCities.has(savedCity);
-              return (
-                <article
-                  className={`city-card${isSelected ? ' city-card--selected' : ''}`}
-                  key={savedCity}
-                >
-                  <input
-                    type="checkbox"
-                    checked={isSelected}
-                    onChange={() => toggleCity(savedCity)}
-                    aria-label={`Select ${savedCity}`}
-                  />
-                  <button className="city-card__body" type="button" onClick={() => openWeather(savedCity)}>
-                    <span className="city-card__index">{String(index + 1).padStart(2, '0')}</span>
-                    <span className="city-card__name">{savedCity}</span>
-                    <span className="city-card__action">View weather <span aria-hidden="true">&rarr;</span></span>
-                  </button>
-                </article>
-              );
-            })}
-          </div>
-        )}
-      </section>
+      <SavedCities
+        cities={savedCities}
+        selectedCities={selectedCities}
+        onSelect={toggleCity}
+        onDeleteSelected={deleteSelectedCities}
+        onOpen={openWeather}
+      />
     </main>
   );
 };
