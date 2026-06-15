@@ -1,0 +1,287 @@
+$ink: #17221d;
+$cream: #f2f5f0;
+$lime: #d8f36a;
+$green: #1f4d3d;
+$orange: #f6a94a;
+
+#root,
+.weather-page {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Manrope', Arial, sans-serif;
+}
+
+.hero-panel,
+.weather-page {
+  background: linear-gradient(145deg, #183e33, #245b49);
+}
+
+.hero-panel {
+  position: relative;
+  overflow: hidden;
+  min-height: 480px;
+}
+
+.hero-panel::after {
+  position: absolute;
+  right: -70px;
+  bottom: -150px;
+  width: 360px;
+  height: 360px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 50%;
+  box-shadow: 0 0 0 55px rgba(255, 255, 255, .035), 0 0 0 110px rgba(255, 255, 255, .025);
+  content: '';
+}
+
+.brand-mark {
+  display: flex;
+  gap: 5px;
+  align-items: end;
+  width: 28px;
+  height: 28px;
+}
+
+.brand-mark span {
+  width: 6px;
+  border-radius: 999px;
+  background: $lime;
+}
+
+.brand-mark span:nth-child(1) { height: 12px; }
+.brand-mark span:nth-child(2) { height: 26px; }
+.brand-mark span:nth-child(3) { height: 18px; }
+
+.eyebrow,
+.detail-label {
+  display: block;
+  color: $lime;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.eyebrow--dark,
+.detail-label {
+  color: #718074;
+}
+
+.hero-title {
+  max-width: 750px;
+  letter-spacing: -.055em;
+}
+
+.hero-copy {
+  max-width: 590px;
+}
+
+.city-form {
+  max-width: 930px;
+}
+
+.city-input {
+  border-color: rgba(255, 255, 255, .2);
+  color: #fff;
+  background: rgba(255, 255, 255, .09);
+}
+
+.city-input:focus {
+  border-color: $lime;
+  color: #fff;
+  background: rgba(255, 255, 255, .14);
+  box-shadow: 0 0 0 .25rem rgba(216, 243, 106, .2);
+}
+
+.city-input::placeholder {
+  color: rgba(255, 255, 255, .46);
+}
+
+.btn-accent {
+  border-color: $lime;
+  color: $ink;
+  background: $lime;
+}
+
+.btn-accent:hover,
+.btn-accent:focus {
+  border-color: #e3fa86;
+  color: $ink;
+  background: #e3fa86;
+}
+
+.text-accent {
+  color: $lime !important;
+}
+
+.empty-state__icon {
+  width: 68px;
+  height: 38px;
+  border: 3px solid #78907f;
+  border-top: 0;
+  border-radius: 0 0 40px 40px;
+}
+
+.city-card {
+  position: relative;
+  min-height: 205px;
+  border-color: #d8ded5;
+  box-shadow: 0 9px 28px rgba(30, 53, 42, .06);
+  transition: transform .2s ease;
+}
+
+.city-card:hover {
+  transform: translateY(-3px);
+}
+
+.city-card--selected {
+  border-color: $orange;
+  background: #fff1d6;
+}
+
+.city-card__checkbox {
+  position: absolute;
+  z-index: 2;
+  top: 21px;
+  right: 21px;
+  width: 19px;
+  height: 19px;
+  cursor: pointer;
+}
+
+.city-card__checkbox:checked {
+  border-color: $green;
+  background-color: $green;
+}
+
+.city-card__body {
+  min-height: 203px;
+  border: 0;
+}
+
+.city-card__name {
+  font-family: 'Manrope', Arial, sans-serif;
+  font-size: clamp(1.45rem, 2.4vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -.035em;
+}
+
+.weather-page {
+  color: #fff;
+}
+
+.weather-hero {
+  min-height: 360px;
+}
+
+.weather-hero h1 {
+  font-size: clamp(3rem, 7vw, 6.7rem);
+  letter-spacing: -.065em;
+  line-height: .95;
+}
+
+.weather-hero h1 span {
+  color: rgba(255, 255, 255, .42);
+}
+
+.weather-description {
+  color: rgba(255, 255, 255, .66);
+  font-size: 1.18rem;
+  text-transform: capitalize;
+}
+
+.temperature-block {
+  position: relative;
+  min-width: 190px;
+  text-align: right;
+}
+
+.temperature-block img {
+  position: absolute;
+  top: -78px;
+  right: 80px;
+  width: 150px;
+}
+
+.temperature-block strong {
+  display: block;
+  font-family: 'Manrope', Arial, sans-serif;
+  font-size: clamp(4rem, 8vw, 7rem);
+  letter-spacing: -.08em;
+  line-height: 1;
+}
+
+.temperature-block span {
+  color: rgba(255, 255, 255, .55);
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.weather-content {
+  color: $ink;
+  background: $cream;
+  border-radius: 34px 34px 0 0;
+}
+
+.stat-card {
+  min-height: 132px;
+  border-color: #dce2d9;
+}
+
+.detail-label {
+  margin-bottom: 17px;
+}
+
+.stat-card strong {
+  font-family: 'Manrope', Arial, sans-serif;
+  font-size: clamp(1.35rem, 2.5vw, 2rem);
+}
+
+.sun-card {
+  background: #dde8c5;
+}
+
+.sun-card strong {
+  font-family: 'Manrope', Arial, sans-serif;
+  font-size: 1.4rem;
+}
+
+.sun-track {
+  position: relative;
+  height: 55px;
+  overflow: hidden;
+  border-top: 2px dashed #8da06d;
+  border-radius: 50%;
+}
+
+.sun-track span {
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: $orange;
+  box-shadow: 0 0 0 7px rgba(246, 169, 74, .2);
+}
+
+.error-card {
+  width: min(510px, 100%);
+}
+
+@media (max-width: 575.98px) {
+  .temperature-block {
+    min-height: 120px;
+    text-align: left;
+  }
+
+  .temperature-block img {
+    right: 5px;
+  }
+}
