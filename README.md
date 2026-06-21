@@ -1,73 +1,98 @@
-# React + TypeScript + Vite
+# City Weather
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+City Weather is a small React application for checking current weather conditions and keeping a short list of cities you care about. It uses the OpenWeather current weather API and stores saved cities and recent searches in the browser.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Search current weather by city name
+- View temperature, humidity, wind, pressure, visibility, sunrise, and sunset
+- Save frequently checked cities
+- Select and remove multiple saved cities
+- Reopen recent searches without typing the city again
+- Handle invalid cities, network failures, loading states, and cancelled requests
+- Persist saved and recent cities with `localStorage`
+- Responsive layout built with Bootstrap and a small set of custom styles
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 and TypeScript
+- Vite
+- React Router
+- Axios
+- Bootstrap 5
+- Sass
+- OpenWeather API
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js `20.19+` or `22.12+`
+- An [OpenWeather API key](https://openweathermap.org/api)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Create a `.env.local` file in the project root:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_OPEN_WEATHER_API_KEY=your_api_key_here
 ```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Vite will print the local URL in the terminal, usually `http://localhost:5173`.
+
+## Available Scripts
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the Vite development server |
+| `npm run build` | Type-check the project and create a production build |
+| `npm run lint` | Run ESLint across the project |
+| `npm run preview` | Serve the production build locally |
+
+## Project Structure
+
+```text
+src/
+|-- components/
+|   |-- Home.tsx              # Search, recent history, and saved-city state
+|   |-- SavedCities.tsx       # Saved-city list and selection UI
+|   `-- WeatherDetails.tsx    # Weather request states and detail view
+|-- services/
+|   |-- httpService.ts        # OpenWeather client and request error handling
+|   `-- utilService.ts        # API normalization and city utilities
+|-- App.tsx                   # Application routes
+|-- App.scss                  # App-specific visual styles
+`-- index.scss                # Global styles
+```
+
+## Implementation Notes
+
+The UI does not consume the OpenWeather response directly. `utilService.formatWeatherData` converts the nested API payload into a stable `WeatherData` shape first. Keeping that conversion at the service boundary prevents API-specific field names from spreading through the components and makes response changes easier to handle.
+
+Weather requests return a discriminated success/error result from `httpService`. This keeps Axios details out of the UI and gives the detail page one predictable path for loading, success, and failure states.
+
+Saved cities and recent searches are intentionally browser-local. They use the following keys:
+
+- `city-weather:saved-cities`
+- `city-weather:recent-cities`
+
+No backend or user account is required.
+
+## Production Build
+
+```bash
+npm run build
+npm run preview
+```
+
+The generated production files are written to `dist/`.
